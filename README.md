@@ -81,6 +81,13 @@ npm test
 
 The sources live in `src/` and compile to `dist/src`. Keep the build output current before publishing or linking locally.
 
+Run `npm test -- --watch` while iterating; the expanded suite details live in [docs/testing.md](docs/testing.md).
+
+## Documentation
+
+- [Development guide](docs/development.md) covers architecture, installer safety, and publishing steps.
+- [Testing guide](docs/testing.md) outlines the Vitest suite, fixtures, and future coverage goals.
+
 ## Roadmap
 
 - Expand the catalog of supported coding agents (Copilot CLI, Cursor, Zed Agent, etc.)
