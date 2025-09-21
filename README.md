@@ -78,3 +78,9 @@ The sources live in `src/` and compile to `dist/src`. Keep the build output curr
 - Add a VS Code command runner that shells out to `ai use <tool>`
 - Offer optional Docker sandbox profiles for YOLO sessions
 - Replace the prompt with a richer Ink-powered TUI picker
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+---
