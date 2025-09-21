@@ -1,6 +1,6 @@
 {
   "name": "ai-switch",
-  "version": "0.1.2",
+  "version": "0.1.1",
   "type": "module",
   "bin": {
     "ai": "./dist/src/index.js"
