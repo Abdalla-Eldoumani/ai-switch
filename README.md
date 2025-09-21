@@ -65,7 +65,7 @@ sandbox_mode = "workspace-write"
 
 ## Security
 
-- `npm audit` (last run 2025-02-14) reports zero known vulnerabilities after upgrading dev tooling to `vitest@^3.2.4`.
+- `npm audit` (last run 2025-09-20) reports zero known vulnerabilities after upgrading dev tooling to `vitest@^3.2.4`.
 - Installer commands are hard-coded and executed with `execaCommand`; tool launches use argv arrays to avoid shell injection (Windows uses `shell: true` only to support `.cmd` shims).
 - Treat `.ai-switch.json` as trusted input; untrusted defaults could add flags to downstream CLIs, so review contributions before committing.
 - Run `npm audit` and `npm test` before publishing new versions to catch regressions early.
