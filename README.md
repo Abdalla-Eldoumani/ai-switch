@@ -1,6 +1,7 @@
 # ai-switch
 
 [![npm version](https://img.shields.io/npm/v/ai-switch.svg?color=cb3837)](https://www.npmjs.com/package/ai-switch)
+Link to the NPM Package: (https://www.npmjs.com/package/ai-switch)
 
 `ai-switch` is a lightweight Node/TypeScript CLI that locates (via `which`), optionally installs, and launches one of three coding agents (Codex CLI, Claude Code, Gemini CLI). It can layer project defaults, surface each tool's documented YOLO flag, and always shows the exact command before it runs. It is published as a verified package on npm.
 
