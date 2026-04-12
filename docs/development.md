@@ -34,6 +34,14 @@ This guide captures the architecture and key responsibilities of each module so 
 
 Increment the version with `npm version <patch|minor|major>` before publishing. We currently ship `0.1.2` as an npm-verified package maintained by **@zpicy**.
 
+## Alias system
+Short two-letter aliases (e.g. `cc` for claude, `cx` for codex) live in the `ALIASES` map in `src/core.ts`. The `normalizeToolKey()` function checks canonical names first, then falls back to aliases. This keeps aliases out of `Object.keys(TOOLS)` so they don't appear in iteration paths like `doctor` or the interactive picker's value list.
+
+When adding a new tool:
+1. Add the `ToolDefinition` to the `TOOLS` record (expand the type union).
+2. Add a two-letter alias to the `ALIASES` map.
+3. Add tests for the new tool's metadata, installers, and alias resolution.
+
 ## Future enhancements
 - Automate linting/static analysis for faster feedback.
 - Expand `docs/` with per-tool behaviour notes as new integrations land.
