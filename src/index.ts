@@ -7,9 +7,11 @@ import ora from "ora";
 import chalk from "chalk";
 import os from "node:os";
 import {
+  ALIASES,
   TOOLS,
   ToolKey,
   AiSwitchConfig,
+  getAliasesForTool,
   getInstallerChoices,
   getToolDefinition,
   loadConfig,
@@ -141,7 +143,15 @@ function resolveToolFromInput(
   if (toolArg) {
     const normalized = normalizeToolKey(toolArg);
     if (!normalized) {
-      console.error(chalk.red(`Unknown tool: ${toolArg}`));
+      const tools = Object.keys(TOOLS).join(", ");
+      const aliases = Object.entries(ALIASES)
+        .map(([k, v]) => `${k}=${v}`)
+        .join(", ");
+      console.error(
+        chalk.red(
+          `Unknown tool: ${toolArg}\nValid tools: ${tools}\nAliases: ${aliases}`,
+        ),
+      );
       process.exit(1);
     }
     return normalized;
@@ -169,7 +179,12 @@ async function runUseCommand(toolInput: string | undefined, dryRun: boolean) {
         type: "list",
         name: "picked",
         message: "Pick a tool to launch:",
-        choices: Object.keys(TOOLS),
+        choices: (Object.keys(TOOLS) as ToolKey[]).map((key) => {
+          const tool = getToolDefinition(key);
+          const aliases = getAliasesForTool(key);
+          const hint = aliases.length ? ` (${aliases.join(", ")})` : "";
+          return { name: `${tool.pretty}${hint}`, value: key };
+        }),
       },
     ]);
     toolKey = requireToolKey(normalizeToolKey(picked));
@@ -200,13 +215,13 @@ const program = new Command();
 program
   .name("ai")
   .description(
-    "One CLI to run Codex, Claude Code, or Gemini (and install if missing).",
+    "One CLI to run Codex, Claude Code, Gemini, Aider, Amp, or Qwen (and install if missing).",
   )
-  .version("0.1.0")
+  .version("0.2.0")
   .option("--dry-run", "Print commands without executing them");
 
 const useCommand = new Command("use")
-  .argument("[tool]", "codex | claude | gemini")
+  .argument("[tool]", "tool name or alias (cc, cx, gm, ad, am, qw)")
   .allowExcessArguments(true)
   .description("Launch a coding agent in the current directory")
   .action(async (toolInput?: string) => {
@@ -215,7 +230,7 @@ const useCommand = new Command("use")
   });
 
 const yoloCommand = new Command("yolo")
-  .argument("<tool>", "codex | claude | gemini")
+  .argument("<tool>", "tool name or alias (cc, cx, gm, ad, am, qw)")
   .allowExcessArguments(true)
   .description("Launch with the tool's documented skip-approvals flag")
   .action(async (toolInput: string) => {
@@ -234,8 +249,12 @@ program
       const tool = getToolDefinition(key);
       const ok = await isInstalled(tool.bin);
       const mark = ok ? chalk.green("✔") : chalk.yellow("✖");
+      const aliases = getAliasesForTool(key);
+      const aliasHint = aliases.length
+        ? chalk.dim(` (${aliases.join(", ")})`)
+        : "";
       console.log(
-        `${mark} ${key.padEnd(7)} → ${tool.bin}${ok ? "" : " (not found)"}`,
+        `${mark} ${key.padEnd(7)}${aliasHint.padEnd(8)} -> ${tool.bin}${ok ? "" : " (not found)"}`,
       );
     }
   });
