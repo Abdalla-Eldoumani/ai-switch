@@ -17,7 +17,10 @@ export interface ToolDefinition {
   yoloFlags?: string[];
 }
 
-export const TOOLS: Record<"codex" | "claude" | "gemini", ToolDefinition> = {
+export const TOOLS: Record<
+  "codex" | "claude" | "gemini" | "aider" | "amp" | "qwen",
+  ToolDefinition
+> = {
   codex: {
     bin: "codex",
     pretty: "OpenAI Codex CLI",
@@ -49,9 +52,47 @@ export const TOOLS: Record<"codex" | "claude" | "gemini", ToolDefinition> = {
     ],
     yoloFlags: ["--yolomode", "--yolo"],
   },
+  aider: {
+    bin: "aider",
+    pretty: "Aider",
+    installers: [
+      { label: "pip", cmd: "pip install aider-chat" },
+      { label: "brew", cmd: "brew install aider", platforms: ["darwin"] },
+    ],
+  },
+  amp: {
+    bin: "amp",
+    pretty: "Sourcegraph Amp",
+    installers: [
+      { label: "npm", cmd: "npm install -g @anthropic-ai/amp" },
+    ],
+  },
+  qwen: {
+    bin: "qwen",
+    pretty: "Qwen Code",
+    installers: [
+      { label: "npm", cmd: "npm install -g qwen-code" },
+    ],
+    yoloFlags: ["--yolo"],
+  },
 };
 
 export type ToolKey = keyof typeof TOOLS;
+
+export const ALIASES: Readonly<Record<string, ToolKey>> = {
+  cc: "claude",
+  cx: "codex",
+  gm: "gemini",
+  ad: "aider",
+  am: "amp",
+  qw: "qwen",
+};
+
+export function getAliasesForTool(key: ToolKey): string[] {
+  return Object.entries(ALIASES)
+    .filter(([, v]) => v === key)
+    .map(([k]) => k);
+}
 
 export interface AiSwitchConfig {
   defaultTool?: ToolKey;
@@ -69,6 +110,9 @@ export function normalizeToolKey(value?: string | null): ToolKey | undefined {
   const key = value.toLowerCase();
   if (key in TOOLS) {
     return key as ToolKey;
+  }
+  if (key in ALIASES) {
+    return ALIASES[key];
   }
   return undefined;
 }
