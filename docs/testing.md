@@ -15,8 +15,9 @@ Our Vitest suite exercises the configuration loader, tool metadata helpers, inst
 - For CLI behaviour that requires prompts or process exits, refactor the entry point into injectable helpers before adding tests so we can stub dependencies cleanly.
 
 ## Coverage checklist
-- Configuration: valid JSON, malformed JSON, unknown tools, and invalid flag arrays.
+- Configuration: valid JSON, malformed JSON, unknown tools, invalid flag arrays, and alias resolution in `defaultTool`.
 - Tool metadata: YOLO flag selection, installer filtering, tool key normalization, `hasTool`, and shell command formatting.
+- Alias resolution: every alias maps to a valid ToolKey, no alias collides with a canonical key, case-insensitive lookup, `getAliasesForTool` returns correct results.
 - Passthrough handling: multiple `--` delimiters, empty args, and the absence of passthrough.
 
 ## Tips
