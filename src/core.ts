@@ -66,6 +66,7 @@ export const TOOLS: Record<
     installers: [
       { label: "npm", cmd: "npm install -g @anthropic-ai/amp" },
     ],
+    yoloFlags: ["--dangerously-allow-all"],
   },
   qwen: {
     bin: "qwen",
