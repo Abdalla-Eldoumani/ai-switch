@@ -64,7 +64,7 @@ export const TOOLS: Record<
     bin: "amp",
     pretty: "Sourcegraph Amp",
     installers: [
-      { label: "npm", cmd: "npm install -g @anthropic-ai/amp" },
+      { label: "npm", cmd: "npm install -g @ampcode/cli" },
     ],
     yoloFlags: ["--dangerously-allow-all"],
   },
