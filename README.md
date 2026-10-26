@@ -1,20 +1,27 @@
 # ai-switch
 
 [![npm version](https://img.shields.io/npm/v/ai-switch.svg?color=cb3837)](https://www.npmjs.com/package/ai-switch)
-Link to the NPM Package: (https://www.npmjs.com/package/ai-switch)
 
-`ai-switch` is a lightweight Node/TypeScript CLI that locates (via `which`), optionally installs, and launches popular AI coding agents (Codex, Claude Code, Gemini, Aider, Amp, Qwen). Every tool has a two-letter alias for fast invocation. It can layer project defaults, surface each tool's documented YOLO flag, and always shows the exact command before it runs. It is published as a verified package on npm.
+`ai-switch` is a small Node/TypeScript CLI that finds (via `which`), optionally installs, and launches AI coding agents: Codex, Claude Code, Gemini, Aider, Amp, and Qwen. Every tool has a two-letter alias. It can apply project defaults, pass each tool's documented YOLO flag, and always prints the exact command before it runs.
 
 ## Features
 - `ai use [tool]` launches any supported agent; omit the tool to pick interactively or fall back to the project's configured default.
 - Two-letter aliases for every tool: `ai yolo cc` launches Claude Code, `ai use cx` launches Codex.
-- If the binary is missing, the CLI offers curated install commands (npm / pip / Homebrew) and streams output so you can see what runs.
-- `--dry-run` prints the resolved launch/install command without executing anything, helping you sanity-check automation.
+- If the binary is missing, the CLI offers install commands (npm, pip, or Homebrew on macOS) and streams their output.
+- `--dry-run` prints the resolved launch command without running anything.
 - `ai yolo <tool>` forwards the first documented skip-approvals flag for that tool and prints a bold warning.
-- `ai doctor` reports PATH status for every supported agent in a quick checklist.
+- `ai doctor` reports PATH status for every supported agent.
 - Arguments after `--` are passed verbatim to the downstream CLI; defaults from `.ai-switch.json` are prepended first.
 
 ## Installation
+
+From npm:
+
+```bash
+npm install -g ai-switch
+```
+
+From source:
 
 ```bash
 npm install
@@ -56,11 +63,11 @@ Aliases work everywhere tool names are accepted: CLI arguments, `defaultTool` in
 
 | Tool | Binary | Install | YOLO flag |
 |------|--------|---------|-----------|
-| OpenAI Codex CLI | `codex` | npm, brew | `--yolo` |
-| Anthropic Claude Code | `claude` | npm, brew | `--dangerously-skip-permissions` |
-| Google Gemini CLI | `gemini` | npm, brew | `--yolomode` |
-| Aider | `aider` | pip, brew | -- |
-| Sourcegraph Amp | `amp` | npm | -- |
+| OpenAI Codex CLI | `codex` | npm, brew (macOS) | `--yolo` |
+| Anthropic Claude Code | `claude` | npm, brew (macOS) | `--dangerously-skip-permissions` |
+| Google Gemini CLI | `gemini` | npm, brew (macOS) | `--yolomode` |
+| Aider | `aider` | pip, brew (macOS) | -- |
+| Sourcegraph Amp | `amp` | npm | `--dangerously-allow-all` |
 | Qwen Code | `qwen` | npm | `--yolo` |
 
 ## Project configuration
@@ -84,8 +91,7 @@ The loader validates both fields: unknown tools or non-string arrays are ignored
 Every downstream CLI has its own sandboxing and approval controls. Prefer enabling approvals and a workspace-write sandbox in their native configs so that launching through `ai-switch` inherits those safer defaults. For example, Codex users can add this to `~/.codex/config.toml`:
 
 ```toml
-[session]
-approval_policy = "auto"
+approval_policy = "on-request"
 sandbox_mode = "workspace-write"
 ```
 
@@ -95,8 +101,7 @@ sandbox_mode = "workspace-write"
 
 ## Security
 
-- `npm audit` (last run 2025-09-20) reports zero known vulnerabilities after upgrading dev tooling to `vitest@^3.2.4`.
-- Installer commands are hard-coded and executed with `execaCommand`; tool launches use argv arrays to avoid shell injection (Windows uses `shell: true` only to support `.cmd` shims).
+- Installer commands are hard-coded and run through a shell with `execaCommand`; tool launches use argv arrays to avoid shell injection (Windows uses `shell: true` only to support `.cmd` shims).
 - Treat `.ai-switch.json` as trusted input; untrusted defaults could add flags to downstream CLIs, so review contributions before committing.
 - Run `npm audit` and `npm test` before publishing new versions to catch regressions early.
 
@@ -111,7 +116,7 @@ npm test
 
 The sources live in `src/` and compile to `dist/src`. Keep the build output current before publishing or linking locally.
 
-Run `npm test -- --watch` while iterating; the expanded suite details live in [docs/testing.md](docs/testing.md).
+Run `npx vitest` for watch mode while iterating; [docs/testing.md](docs/testing.md) describes the suite.
 
 ## Documentation
 
@@ -125,8 +130,6 @@ Run `npm test -- --watch` while iterating; the expanded suite details live in [d
 - Replace the prompt with a richer Ink-powered TUI picker
 - Add more agents as they stabilize (Cline, Cursor CLI, Devin)
 
-## 📄 License
+## License
 
 This project is open source and available under the [MIT License](LICENSE).
-
----
