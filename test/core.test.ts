@@ -54,7 +54,10 @@ describe("selectYoloFlag", () => {
 
   it("returns undefined for tools without YOLO flags", () => {
     expect(selectYoloFlag(TOOLS.aider)).toBeUndefined();
-    expect(selectYoloFlag(TOOLS.amp)).toBeUndefined();
+  });
+
+  it("returns the allow-all flag for amp", () => {
+    expect(selectYoloFlag(TOOLS.amp)).toBe("--dangerously-allow-all");
   });
 
   it("returns undefined when a tool offers no YOLO flag", () => {
