@@ -72,7 +72,7 @@ export const TOOLS: Record<
     bin: "qwen",
     pretty: "Qwen Code",
     installers: [
-      { label: "npm", cmd: "npm install -g qwen-code" },
+      { label: "npm", cmd: "npm install -g @qwen-code/qwen-code" },
     ],
     yoloFlags: ["--yolo"],
   },
