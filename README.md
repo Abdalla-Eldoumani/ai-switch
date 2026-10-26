@@ -35,7 +35,7 @@ ai yolo codex           # launch with the tool's YOLO/skip-approvals flag
 ai doctor               # show which binaries are currently on PATH
 ```
 
-When YOLO mode is requested, the wrapper warns in red and only appends the first YOLO flag declared for the tool (e.g. Codex `--yolo`). If a tool has no documented skip-approvals flag (Aider, Amp), it simply launches normally after warning you.
+When YOLO mode is requested, the wrapper warns in red and only appends the first YOLO flag declared for the tool (e.g. Codex `--yolo`). If a tool has no documented skip-approvals flag (Aider), it simply launches normally after warning you.
 
 ## Aliases
 
